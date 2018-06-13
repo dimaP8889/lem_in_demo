@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 17:02:27 by dpogrebn          #+#    #+#             */
-/*   Updated: 2018/06/13 14:09:32 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/13 17:56:02 by dpogrebn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	ft_print_room(t_room **mass_rooms);
 int		ft_find_start(t_room **mass_rooms);
 int		ft_find_finish(t_room **mass_rooms);
 void	ft_move_ants(int ants, t_room **mass_rooms);
+void	ft_make_way(t_room **mass_rooms);
 void	ft_exit();
 
 #endif
