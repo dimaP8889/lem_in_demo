@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsplit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpogrebn <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 17:43:41 by dpogrebn          #+#    #+#             */
-/*   Updated: 2017/11/07 17:43:42 by dpogrebn         ###   ########.fr       */
+/*   Updated: 2018/06/14 18:08:01 by dpogrebn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ char			**ft_strsplit(char const *s, char c)
 			i = 0;
 			str = make_word(s, &i, c);
 			*split = ft_strdup(str);
+			free(str);
 			split++;
 			s = s + i;
 		}

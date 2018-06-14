@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_valid.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 17:15:40 by dpogrebn          #+#    #+#             */
-/*   Updated: 2018/06/14 13:59:58 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/14 17:59:29 by dpogrebn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ t_room	*ft_find_end(char **str, int fd, t_room *room)
 	//system("leaks lem-in");
 	ft_valid_room(str, fd, room);
 	free(*str);
-	//system("leaks lem-in");
+	system("leaks lem-in");
 	room->next_room = (t_room *)malloc(sizeof(t_room));
 	room = room->next_room;
 	get_next_line(fd, str);
@@ -261,6 +261,7 @@ t_room			**ft_valid(int fd)
 		in = in->next_room;
 		coun++;
 	}
+	free(in);
 	mass_rooms[coun] = NULL;
 	mass_rooms = ft_set_params(mass_rooms);
 	ft_check_rights(mass_rooms);
