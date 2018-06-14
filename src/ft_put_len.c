@@ -6,7 +6,7 @@
 /*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 19:17:54 by dmitriy1          #+#    #+#             */
-/*   Updated: 2018/06/14 03:19:39 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/14 10:48:25 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ void	ft_set_len_bk(t_room **mass_rooms, int count, int len)
 	room = mass_rooms[count]->r_name;
 	if (len < mass_rooms[count]->length_bk || !mass_rooms[count]->length_bk)
 	{
-		mass_rooms[count]->length_bk = len;
-		mass_rooms[count]->length_bk_cp = len;
+		mass_rooms[count]->length_bk = len; 
 		room->use_bk = 0;
 	}
 	if (room->use_bk)
@@ -71,11 +70,9 @@ void	ft_put_len(t_room **mass_rooms_cp)
 
 	mass_rooms = mass_rooms_cp;
 	start = ft_find_start(mass_rooms);
-	//ft_printf("lol");
 	count_fin = ft_find_finish(mass_rooms);
 	if (!mass_rooms[count_fin]->r_name || !mass_rooms[start]->r_name)
 		ft_exit();
 	ft_set_len_bk(mass_rooms, count_fin, 0);
 	mass_rooms[count_fin]->length_bk = 0;
-	//mass_rooms[count_fin]->length_bk_cp = 0;
 }

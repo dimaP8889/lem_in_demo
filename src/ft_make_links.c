@@ -6,7 +6,7 @@
 /*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/26 13:31:24 by dmitriy1          #+#    #+#             */
-/*   Updated: 2018/06/14 03:45:44 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/14 11:02:01 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,27 @@ void	ft_linked(t_links *links, char *str, t_room **mass_rooms)
 	links->s_name = ft_strdup(s_name);
 	ft_check_right_name(links->f_name, mass_rooms);
 	ft_check_right_name(links->s_name, mass_rooms);
+	free(f_name);
+}
+
+void	ft_free_links(t_links	*links)
+{
+	while (links)
+	{
+		free(links->f_name);
+		free(links->s_name);
+		links = links->next;
+	}
+	free(links);
+}
+
+void	ft_malloc_link(int end, t_links	**links)
+{
+	if (end)
+	{
+		(*links)->next = (t_links *)malloc(sizeof(t_links));
+		*links = (*links)->next;
+	}
 }
 
 void	ft_make_links(t_room **mass_rooms, int fd, char *str)
@@ -107,9 +128,7 @@ void	ft_make_links(t_room **mass_rooms, int fd, char *str)
 	t_links	*links;
 	t_links	*links_cp;
 	t_room **mass_rooms_cp;
-	int		num_rooms;
 
-	num_rooms = 0;
 	end = 1;
 	mass_rooms_cp = mass_rooms;
 	links = (t_links *)malloc(sizeof(t_links));
@@ -121,15 +140,11 @@ void	ft_make_links(t_room **mass_rooms, int fd, char *str)
 			ft_comment(&str, fd, mass_rooms[0]);
 		ft_linked(links, str, mass_rooms);
 		end = get_next_line(fd, &str);
-		num_rooms++;
-		if (end)
-		{
-			links->next = (t_links *)malloc(sizeof(t_links));
-			links = links->next;
-		}
+		ft_malloc_link(end, &links);
 	}
 	links->next = NULL;
 	ft_make_graph(mass_rooms_cp, links_cp);
+	ft_free_links(links);
 	ft_put_len(mass_rooms_cp);
 	ft_make_way(mass_rooms_cp);
 }

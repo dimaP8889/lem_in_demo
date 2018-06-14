@@ -6,7 +6,7 @@
 /*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 12:31:09 by dmitriy1          #+#    #+#             */
-/*   Updated: 2018/06/14 00:30:36 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/14 10:38:02 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ int		ft_find_next(t_name *room, t_room **mass_rooms, int count)
 
 	while (room)
 	{
-		// ft_printf("room %i ", mass_rooms[room->num]->length_bk);
-		// ft_printf("cnt %i \n", mass_rooms[count]->length_bk);
 		if (mass_rooms[room->num]->left_way 
 		&& mass_rooms[room->num]->length_bk < mass_rooms[count]->length_bk)
 		{
@@ -121,10 +119,57 @@ int		ft_find_last(t_room **mass_rooms, int count)
 	return (count);
 }
 
+int			ft_untill_start(t_room **mass_rooms, int count, int in, t_ants *ant)
+{
+	int		next;
+	int		finish;
+
+	finish = ft_find_finish(mass_rooms);
+	if (!mass_rooms[count]->free && !mass_rooms[count]->fin)
+	{
+		mass_rooms[count]->free = 1;
+		next = ft_find_next(mass_rooms[count]->r_name, mass_rooms, count);
+		ft_change_room(ant, mass_rooms[count]->name, mass_rooms[next]->name);
+		count = ft_find_next_bk(mass_rooms[count]->r_name, mass_rooms, count);
+		if (mass_rooms[next]->fin)
+			mass_rooms[next]->ants++;
+		else
+			mass_rooms[next]->free = 0;
+	}
+	else
+	{
+		if (in == 1)
+			mass_rooms[finish]->ants++;
+		count = ft_find_next_bk(mass_rooms[count]->r_name, mass_rooms, count);
+	}
+	return (count);
+}
+
+t_ants 		*ft_start(t_room **mass_rooms, int count, int in, t_ants *ant)
+{
+	int start;
+	int	finish;
+
+	start = ft_find_start(mass_rooms);
+	finish = ft_find_finish(mass_rooms);
+	count = ft_find_next(mass_rooms[count]->r_name, mass_rooms, count);
+	mass_rooms[count]->free = 0;
+	mass_rooms[start]->ants--;
+	if (!in)
+		mass_rooms[finish]->ants++;
+	if (mass_rooms[start]->ants >= 0)
+	{
+		if (!ant)
+			ant = ft_make_new(ant, mass_rooms[count]->name);
+		else
+			ant = ft_make_ant(ant, mass_rooms[count]->name);
+	}
+	return (ant);
+}
+
 t_ants *ft_move(t_room **mass_rooms, int finish, t_ants *ant, int moves)
 {
 	int		count;
-	int		next;
 	int		start;
 	int		in;
 
@@ -133,39 +178,12 @@ t_ants *ft_move(t_room **mass_rooms, int finish, t_ants *ant, int moves)
 	count = finish;
 	while (moves)
 	{
-		if (!mass_rooms[count]->free && !mass_rooms[count]->fin)
-		{
-			mass_rooms[count]->free = 1;
-			next = ft_find_next(mass_rooms[count]->r_name, mass_rooms, count);
-			ft_change_room(ant, mass_rooms[count]->name, mass_rooms[next]->name);
-			count = ft_find_next_bk(mass_rooms[count]->r_name, mass_rooms, count);
-			if (mass_rooms[next]->fin)
-				mass_rooms[next]->ants++;
-			else
-				mass_rooms[next]->free = 0;
-		}
-		else
-		{
-			if (in == 1)
-				mass_rooms[finish]->ants++;
-			count = ft_find_next_bk(mass_rooms[count]->r_name, mass_rooms, count);
-		}
+		count = ft_untill_start(mass_rooms, count, in, ant);
 		moves--;
 	}
 	if (!moves)
 	{
-		count = ft_find_next(mass_rooms[count]->r_name, mass_rooms, count);
-		mass_rooms[count]->free = 0;
-		mass_rooms[start]->ants--;
-		if (!in)
-			mass_rooms[finish]->ants++;
-		if (mass_rooms[start]->ants >= 0)
-		{
-			if (!ant)
-				ant = ft_make_new(ant, mass_rooms[count]->name);
-			else
-				ant = ft_make_ant(ant, mass_rooms[count]->name);
-		}
+		ant = ft_start(mass_rooms, count, in, ant);
 	}
 	return (ant);
 }

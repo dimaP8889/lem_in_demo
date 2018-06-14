@@ -6,7 +6,7 @@
 /*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 17:15:40 by dpogrebn          #+#    #+#             */
-/*   Updated: 2018/06/14 03:46:57 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/14 10:49:29 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,25 @@ void			ft_check_rights(t_room **mass_rooms)
 	}
 }
 
+t_room			**ft_set_params(t_room **mass_rooms)
+{
+	int		coun;
+
+	coun = 0;
+	while (mass_rooms[coun])
+	{
+		mass_rooms[coun]->r_name = NULL;
+		mass_rooms[coun]->next_room = NULL;
+		mass_rooms[coun]->free = 1;
+		mass_rooms[coun]->ants = 0;
+		mass_rooms[coun]->left_way = 0;
+		mass_rooms[coun]->use_bk = 0;
+		mass_rooms[coun]->length_bk = 0;
+		coun++;
+	}
+	return (mass_rooms);
+}
+
 t_room			**ft_valid(t_room *in, int fd)
 {
 	t_room	**mass_rooms;
@@ -189,7 +208,6 @@ t_room			**ft_valid(t_room *in, int fd)
 
 	str = NULL;
 	coun = 0;
-	//ft_check_num(lol, fd);
 	in = ft_check_rooms(in, fd, &str);
 	mass_rooms = (t_room **)malloc(sizeof(t_room *) * ft_count_links(in));
 	while (in->next_room)
@@ -199,24 +217,7 @@ t_room			**ft_valid(t_room *in, int fd)
 		coun++;
 	}
 	mass_rooms[coun] = NULL;
-	coun = 0;
-	while (mass_rooms[coun])
-	{
-		mass_rooms[coun]->r_name = NULL;
-		mass_rooms[coun]->next_room = NULL;
-		mass_rooms[coun]->length_way = 0;
-		mass_rooms[coun]->free = 1;
-		mass_rooms[coun]->ants = 0;
-		mass_rooms[coun]->length = 0;
-		mass_rooms[coun]->use = 0;
-		mass_rooms[coun]->move = 0;
-		mass_rooms[coun]->left_way = 0;
-		mass_rooms[coun]->use_bk = 0;
-		mass_rooms[coun]->last = 0;
-		mass_rooms[coun]->length_bk = 0;
-		mass_rooms[coun]->length_bk_cp = 0;
-		coun++;
-	}
+	mass_rooms = ft_set_params(mass_rooms);
 	ft_check_rights(mass_rooms);
 	ft_make_links(mass_rooms, fd, str);
 	return (mass_rooms);

@@ -6,7 +6,7 @@
 /*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 17:02:27 by dpogrebn          #+#    #+#             */
-/*   Updated: 2018/06/14 03:52:37 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/14 10:47:55 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,13 @@ typedef	struct		s_room
 	char			*name;
 	int				x;
 	int				y;
-	int				length_way;
 	int				ants;
-	int				move;
 	int				left_way;
 	int				free;
-	int				last;
-	int				use;
 	int				use_bk;
 	int				start;
 	int				fin;
-	int				length;
 	int				length_bk;
-	int				length_bk_cp;
 	struct s_room	*next_room;
 	struct s_name	*r_name;
 }					t_room;
