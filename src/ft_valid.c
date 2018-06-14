@@ -6,7 +6,7 @@
 /*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 17:15:40 by dpogrebn          #+#    #+#             */
-/*   Updated: 2018/06/14 10:49:29 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/14 13:53:46 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,15 @@ void	ft_comment(char **str, int fd, t_room *room)
 
 	while (*str[0] == '#' && (ft_strcmp(*str, "##start")) 
 	&& (ft_strcmp(*str, "##end")))
+	{
+		free(*str);
 		get_next_line(fd, str);
+	}
 	if (!ft_strcmp(*str, "##start"))
 	{
 		start++;
 		(room)->start = 1;
+		free(*str);
 		get_next_line(fd, str);
 	}
 	else
@@ -37,6 +41,7 @@ void	ft_comment(char **str, int fd, t_room *room)
 	if (!ft_strcmp(*str, "##end"))
 	{
 		fin++;
+		free(*str);
 		(room)->fin = 1;
 		get_next_line(fd, str);
 	}
@@ -81,16 +86,18 @@ void	ft_check_name(char *str)
 	}
 }
 
-void		ft_valid_room(char *str, int fd, t_room *room)
+void		ft_valid_room(char **str, int fd, t_room *room)
 {
 	char	**params;
+	int		count;
 
+	count = 0;
 	room->fin = 0;
 	room->start = 0;
-	if (str[0] == '#')
-		ft_comment(&str, fd, room);
-	params = ft_strsplit(str, ' ');
-	if (ft_mass_len(params) != 3 || !ft_strlen(str))
+	if (*str[0] == '#')
+		ft_comment(str, fd, room);
+	params = ft_strsplit(*str, ' ');
+	if (ft_mass_len(params) != 3 || !ft_strlen(*str))
 		ft_exit();
 	ft_check_name(params[0]);
 	room->name = ft_strdup(params[0]);
@@ -98,12 +105,24 @@ void		ft_valid_room(char *str, int fd, t_room *room)
 	ft_check_digit(params[2]);
 	room->x = ft_atoi(params[1]);
 	room->y = ft_atoi(params[2]);
+	//system("leaks lem-in");
+	while (params[count])
+	{
+		free(params[count]);
+		count++;
+	}
+	free(params);
+	//system("leaks lem-in");
 }
 
 
 t_room	*ft_find_end(char **str, int fd, t_room *room)
 {
-	ft_valid_room(*str, fd, room);
+
+	//system("leaks lem-in");
+	ft_valid_room(str, fd, room);
+	free(*str);
+	//system("leaks lem-in");
 	room->next_room = (t_room *)malloc(sizeof(t_room));
 	room = room->next_room;
 	get_next_line(fd, str);
@@ -119,7 +138,10 @@ t_room	*ft_check_rooms(t_room *room, int fd, char **str)
 	rooms = room;
 	get_next_line(fd, str);
 	while (!ft_strstr(*str, "-"))
+	{
+		//free(*str);
 		room = ft_find_end(str, fd, room);
+	}
 	room->next_room = NULL;
 	return (rooms);
 }
@@ -146,11 +168,15 @@ int	ft_check_num(int fd)
 	get_next_line(fd, &str);
 	while (str[0] == '#' && (ft_strcmp(str, "##start")) 
 	&& (ft_strcmp(str, "##end")))
+	{
+		free(str);
 		get_next_line(fd, &str);
+	}
 	ants = ft_atoi(str);
 	ft_check_digit(str);
 	if (!ants)
 		ft_exit();
+	free(str);
 	return (ants);
 }
 
@@ -200,19 +226,38 @@ t_room			**ft_set_params(t_room **mass_rooms)
 	return (mass_rooms);
 }
 
-t_room			**ft_valid(t_room *in, int fd)
+void	ft_free_room(t_room	*room)
+{
+	while (room)
+	{
+		free(room->name);
+		free(room);
+		room = room->next_room;
+	}
+}
+
+t_room			**ft_valid(int fd)
 {
 	t_room	**mass_rooms;
+	t_room	*in;
 	int		coun;
 	char	*str;
 
+	in = (t_room *)malloc(sizeof(t_room));
 	str = NULL;
 	coun = 0;
 	in = ft_check_rooms(in, fd, &str);
 	mass_rooms = (t_room **)malloc(sizeof(t_room *) * ft_count_links(in));
 	while (in->next_room)
 	{
-		mass_rooms[coun] = in;
+		mass_rooms[coun] = (t_room *)malloc(sizeof(t_room));
+		mass_rooms[coun]->name = ft_strdup(in->name);
+		mass_rooms[coun]->x = in->x;
+		mass_rooms[coun]->y = in->y;
+		mass_rooms[coun]->start = in->start;
+		mass_rooms[coun]->fin = in->fin;
+		free(in->name);
+		free(in);
 		in = in->next_room;
 		coun++;
 	}

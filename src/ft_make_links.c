@@ -6,7 +6,7 @@
 /*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/26 13:31:24 by dmitriy1          #+#    #+#             */
-/*   Updated: 2018/06/14 11:02:01 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/14 12:15:50 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void	ft_free_links(t_links	*links)
 	{
 		free(links->f_name);
 		free(links->s_name);
+		free(links);
 		links = links->next;
 	}
 	free(links);
@@ -139,6 +140,7 @@ void	ft_make_links(t_room **mass_rooms, int fd, char *str)
 		if (str[0] == '#')
 			ft_comment(&str, fd, mass_rooms[0]);
 		ft_linked(links, str, mass_rooms);
+		free(str);
 		end = get_next_line(fd, &str);
 		ft_malloc_link(end, &links);
 	}

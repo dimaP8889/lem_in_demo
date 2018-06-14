@@ -6,7 +6,7 @@
 /*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 17:02:27 by dpogrebn          #+#    #+#             */
-/*   Updated: 2018/06/14 10:47:55 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/14 12:44:27 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef	struct		s_room
 }					t_room;
 
 
-t_room	**ft_valid(t_room *in, int fd);
+t_room	**ft_valid(int fd);
 int		ft_check_num(int fd);
 void	ft_make_links(t_room **mass_rooms, int fd, char *str);
 void	ft_put_len(t_room **mass_rooms_cp);
@@ -72,6 +72,7 @@ int		ft_find_finish(t_room **mass_rooms);
 void	ft_move_ants(int ants, t_room **mass_rooms);
 void	ft_comment(char **str, int fd, t_room *room);
 void	ft_make_way(t_room **mass_rooms);
+void	ft_free_links(t_links *links);
 void	ft_exit();
 
 #endif
