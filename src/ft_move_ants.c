@@ -6,7 +6,7 @@
 /*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 12:31:09 by dmitriy1          #+#    #+#             */
-/*   Updated: 2018/06/14 10:38:02 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/14 13:59:36 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_ants 	*ft_print_ants(t_ants *ants_cp, char *finish)
 	{
 		ft_printf("L%i-", ants->num);
 		ft_printf("%s ", ants->name);
+		free(ants_cp);
 		ants_cp = ants_cp->next;
 		ants = ants->next;
 	}
