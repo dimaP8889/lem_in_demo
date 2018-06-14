@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 17:02:27 by dpogrebn          #+#    #+#             */
-/*   Updated: 2018/06/13 17:56:02 by dpogrebn         ###   ########.fr       */
+/*   Updated: 2018/06/14 03:52:37 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,9 @@ typedef	struct		s_room
 	struct s_name	*r_name;
 }					t_room;
 
-typedef	struct		s_lem
-{
-	int				num_ants;
-	int				start;
-	int				fin;
-	t_room			*room;
-	t_room			**rooms;
-}					t_lem;
 
-
-t_room	**ft_valid(t_lem *in, int fd);
+t_room	**ft_valid(t_room *in, int fd);
+int		ft_check_num(int fd);
 void	ft_make_links(t_room **mass_rooms, int fd, char *str);
 void	ft_put_len(t_room **mass_rooms_cp);
 void	ft_make_graph(t_room **mass_rooms, t_links *links);
@@ -84,6 +76,7 @@ void	ft_print_room(t_room **mass_rooms);
 int		ft_find_start(t_room **mass_rooms);
 int		ft_find_finish(t_room **mass_rooms);
 void	ft_move_ants(int ants, t_room **mass_rooms);
+void	ft_comment(char **str, int fd, t_room *room);
 void	ft_make_way(t_room **mass_rooms);
 void	ft_exit();
 

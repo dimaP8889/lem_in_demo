@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 17:02:22 by dpogrebn          #+#    #+#             */
-/*   Updated: 2018/06/13 20:08:32 by dpogrebn         ###   ########.fr       */
+/*   Updated: 2018/06/14 03:59:46 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 int		main()
 {
-	t_lem	*in;
+	t_room	*room;
+	t_room	**mass_room;
 	int		fd;
+	int		ants;
 
-	in = (t_lem *)malloc(sizeof(t_lem));
+	room = (t_room *)malloc(sizeof(t_room));
 	fd = open("src/read", O_RDONLY);
-	in->rooms = ft_valid(in, fd);
+	ants = ft_check_num(fd);
+	mass_room = ft_valid(room, fd);
 	//ft_print_room(in->rooms);
-	ft_move_ants(in->num_ants, in->rooms);
+	ft_move_ants(ants, mass_room);
 	//ft_print_room(in->rooms);
 }

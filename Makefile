@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+         #
+#    By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/15 17:02:34 by dpogrebn          #+#    #+#              #
-#    Updated: 2018/06/13 17:56:26 by dpogrebn         ###   ########.fr        #
+#    Updated: 2018/06/14 01:19:31 by dmitriy1         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
  NAME = ./lem-in
@@ -17,5 +17,18 @@ HEADER = src/lem_in.h
 FLAGS = -Wall -Wextra -Werror
 CC = gcc
 
-comp:
+all: $(NAME)
+
+$(NAME):
+	make -C libft/
 	$(CC) $(FLAGS) -o $(NAME) $(SRC) $(LIBA)
+
+clean:
+	make clean -C libft/
+
+fclean:
+	make fclean -C libft/
+	rm -rf $(NAME)
+
+re: fclean all
+	make re -C libft/

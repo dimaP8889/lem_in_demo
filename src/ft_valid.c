@@ -6,7 +6,7 @@
 /*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 17:15:40 by dpogrebn          #+#    #+#             */
-/*   Updated: 2018/06/13 11:55:15 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/14 03:46:57 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ void	ft_comment(char **str, int fd, t_room *room)
 	else
 		(room)->fin = 0;
 	if (start > 1|| fin > 1)
+	{
 		ft_exit();
+	}
 	*str[0] == '#' ? ft_comment(str, fd, (room)) : *str[0] == '#';
 }
 
@@ -135,37 +137,65 @@ int		ft_count_links(t_room *rooms)
 	return (count);
 }
 
-void	ft_check_num(t_lem *in, int fd)
+int	ft_check_num(int fd)
 {
 	char	*str;
+	int		ants;
 
+	ants = 0;
 	get_next_line(fd, &str);
 	while (str[0] == '#' && (ft_strcmp(str, "##start")) 
 	&& (ft_strcmp(str, "##end")))
 		get_next_line(fd, &str);
-	in->num_ants = ft_atoi(str);
+	ants = ft_atoi(str);
 	ft_check_digit(str);
-	if (!in->num_ants)
+	if (!ants)
 		ft_exit();
+	return (ants);
 }
 
-t_room			**ft_valid(t_lem *in, int fd)
+void			ft_check_same_coord(t_room *room, t_room **mass_rooms, int coord)
 {
-	t_lem 	*lol;
+	int		count;
+
+	count = 0;
+	while (mass_rooms[count])
+	{
+		if ((room->x == mass_rooms[count]->x && room->y == mass_rooms[count]->y) 
+		|| !ft_strcmp(room->name, mass_rooms[count]->name))
+			if (count != coord)
+				ft_exit();
+		count++;
+	}
+}
+
+void			ft_check_rights(t_room **mass_rooms)
+{
+	int		count;
+
+	count = 0;
+	while (mass_rooms[count])
+	{
+		ft_check_same_coord(mass_rooms[count], mass_rooms, count);
+		count++;
+	}
+}
+
+t_room			**ft_valid(t_room *in, int fd)
+{
 	t_room	**mass_rooms;
 	int		coun;
 	char	*str;
 
 	str = NULL;
 	coun = 0;
-	lol = in;
-	ft_check_num(lol, fd);
-	lol->room = ft_check_rooms(lol->room, fd, &str);
-	mass_rooms = (t_room **)malloc(sizeof(t_room *) * ft_count_links(lol->room));
-	while (in->room->next_room)
+	//ft_check_num(lol, fd);
+	in = ft_check_rooms(in, fd, &str);
+	mass_rooms = (t_room **)malloc(sizeof(t_room *) * ft_count_links(in));
+	while (in->next_room)
 	{
-		mass_rooms[coun] = in->room;
-		in->room = in->room->next_room;
+		mass_rooms[coun] = in;
+		in = in->next_room;
 		coun++;
 	}
 	mass_rooms[coun] = NULL;
@@ -187,15 +217,7 @@ t_room			**ft_valid(t_lem *in, int fd)
 		mass_rooms[coun]->length_bk_cp = 0;
 		coun++;
 	}
+	ft_check_rights(mass_rooms);
 	ft_make_links(mass_rooms, fd, str);
 	return (mass_rooms);
-	// while (mass_rooms[coun])
-	// {
-	// 	ft_printf("%s ", mass_rooms[coun]->name);
-	// 	ft_printf("x: %i ", mass_rooms[coun]->x);
-	// 	ft_printf("y: %i ", mass_rooms[coun]->y);
-	// 	ft_printf("start: %i ", mass_rooms[coun]->start);
-	// 	ft_printf("fin: %i \n", mass_rooms[coun]->fin);
-	// 	coun++;
-	// }
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_make_way.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 17:40:23 by dpogrebn          #+#    #+#             */
-/*   Updated: 2018/06/13 21:54:10 by dpogrebn         ###   ########.fr       */
+/*   Updated: 2018/06/14 01:51:45 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	ft_make_way(t_room **mass_rooms)
 	int		count;
 	int		len;
 
-	len = mass_rooms[ft_find_start(mass_rooms)]->length_bk;
 	count = ft_find_start(mass_rooms);
+	len = mass_rooms[count]->length_bk;
 	mass_rooms[count]->left_way = 1;
 	while (!mass_rooms[count]->fin)
 	{
@@ -43,5 +43,7 @@ void	ft_make_way(t_room **mass_rooms)
 		count = ft_find_next_link(mass_rooms[count]->r_name, mass_rooms, len);
 		mass_rooms[count]->left_way = 1;
 		len--;
+		if (len < 0)
+			ft_exit();
 	}
 }

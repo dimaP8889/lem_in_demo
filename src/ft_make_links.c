@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_make_links.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/26 13:31:24 by dmitriy1          #+#    #+#             */
-/*   Updated: 2018/06/13 18:00:58 by dpogrebn         ###   ########.fr       */
+/*   Updated: 2018/06/14 03:45:44 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,21 @@ int		ft_find_cont(char *name, t_room **mass_rooms)
 	return (count);
 }
 
-void	ft_linked(t_links *links, char *str)
+void	ft_check_right_name(char *f, t_room **mass_rooms)
+{
+	int		count;
+
+	count = 0;
+	while (mass_rooms[count])
+	{
+		if (!ft_strcmp(mass_rooms[count]->name, f))
+			return;
+		count++;
+	}
+	ft_exit();
+}
+
+void	ft_linked(t_links *links, char *str, t_room **mass_rooms)
 {
 	char	*f_name;
 	char	*s_name;
@@ -83,34 +97,8 @@ void	ft_linked(t_links *links, char *str)
 	s_name = ft_find_second(str);
 	links->f_name = ft_strdup(f_name);
 	links->s_name = ft_strdup(s_name);
-}
-
-void	ft_print_room(t_room **mass_rooms)
-{
-	int	count;
-
-	count = 0;
-	while (mass_rooms[count])
-	{
-		if (mass_rooms[count]->r_name)
-		{
-			ft_printf("name : %s\n", mass_rooms[count]->name);
-			ft_printf("len_bk : %i\n", mass_rooms[count]->length_bk);
-			ft_printf("length_way : %i\n", mass_rooms[count]->length_way);
-			ft_printf("left_way : %i\n", mass_rooms[count]->left_way);
-			ft_printf("use : %i\n", mass_rooms[count]->use);
-			while (mass_rooms[count]->r_name)
-			{
-				ft_printf("num->next : %i\n", mass_rooms[count]->r_name->num);
-				//ft_printf("use : %i\n", mass_rooms[count]->r_name->use);
-				//ft_printf("len->next : %i\n", mass_rooms[count]->r_name->len);
-				//ft_printf("\n");
-				mass_rooms[count]->r_name = mass_rooms[count]->r_name->next;
-			}
-		}
-		ft_printf("\n");
-		count++;
-	}
+	ft_check_right_name(links->f_name, mass_rooms);
+	ft_check_right_name(links->s_name, mass_rooms);
 }
 
 void	ft_make_links(t_room **mass_rooms, int fd, char *str)
@@ -129,7 +117,9 @@ void	ft_make_links(t_room **mass_rooms, int fd, char *str)
 	while (end)
 	{
 		ft_check_valid_link(str);
-		ft_linked(links, str);
+		if (str[0] == '#')
+			ft_comment(&str, fd, mass_rooms[0]);
+		ft_linked(links, str, mass_rooms);
 		end = get_next_line(fd, &str);
 		num_rooms++;
 		if (end)
@@ -140,8 +130,6 @@ void	ft_make_links(t_room **mass_rooms, int fd, char *str)
 	}
 	links->next = NULL;
 	ft_make_graph(mass_rooms_cp, links_cp);
-	//ft_print_room(mass_rooms_cp);
 	ft_put_len(mass_rooms_cp);
 	ft_make_way(mass_rooms_cp);
-	//ft_print_room(mass_rooms);
 }

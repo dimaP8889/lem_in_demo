@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_move_ants.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 12:31:09 by dmitriy1          #+#    #+#             */
-/*   Updated: 2018/06/13 21:54:25 by dpogrebn         ###   ########.fr       */
+/*   Updated: 2018/06/14 00:30:36 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,9 @@ t_ants *ft_move(t_room **mass_rooms, int finish, t_ants *ant, int moves)
 	int		count;
 	int		next;
 	int		start;
+	int		in;
 
+	in = moves;
 	start = ft_find_start(mass_rooms);
 	count = finish;
 	while (moves)
@@ -143,7 +145,11 @@ t_ants *ft_move(t_room **mass_rooms, int finish, t_ants *ant, int moves)
 				mass_rooms[next]->free = 0;
 		}
 		else
+		{
+			if (in == 1)
+				mass_rooms[finish]->ants++;
 			count = ft_find_next_bk(mass_rooms[count]->r_name, mass_rooms, count);
+		}
 		moves--;
 	}
 	if (!moves)
@@ -151,6 +157,8 @@ t_ants *ft_move(t_room **mass_rooms, int finish, t_ants *ant, int moves)
 		count = ft_find_next(mass_rooms[count]->r_name, mass_rooms, count);
 		mass_rooms[count]->free = 0;
 		mass_rooms[start]->ants--;
+		if (!in)
+			mass_rooms[finish]->ants++;
 		if (mass_rooms[start]->ants >= 0)
 		{
 			if (!ant)
@@ -178,6 +186,5 @@ void	ft_move_ants(int ants, t_room **mass_rooms)
 	{
 		ant = ft_move(mass_rooms, fin, ant, moves);
 		ant = ft_print_ants(ant, mass_rooms[fin]->name);
-		moves++;
 	}
 }
