@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_move_ants.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 12:31:09 by dmitriy1          #+#    #+#             */
-/*   Updated: 2018/06/14 13:59:36 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/14 23:00:07 by dpogrebn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,15 +111,6 @@ int		ft_find_next_bk(t_name *room, t_room **mass_rooms, int count)
 	return (num);
 }
 
-int		ft_find_last(t_room **mass_rooms, int count)
-{
-	while (mass_rooms[count]->free && !mass_rooms[count]->start)
-	{
-		count = ft_find_next_bk(mass_rooms[count]->r_name, mass_rooms, count);
-	}
-	return (count);
-}
-
 int			ft_untill_start(t_room **mass_rooms, int count, int in, t_ants *ant)
 {
 	int		next;
@@ -206,4 +197,5 @@ void	ft_move_ants(int ants, t_room **mass_rooms)
 		ant = ft_move(mass_rooms, fin, ant, moves);
 		ant = ft_print_ants(ant, mass_rooms[fin]->name);
 	}
+	free(ant);
 }

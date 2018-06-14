@@ -3,12 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_make_graph.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 19:16:55 by dmitriy1          #+#    #+#             */
-/*   Updated: 2018/06/13 11:43:35 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/14 20:06:48 by dpogrebn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#define COUNT	mass_rooms[count]->r_name
+#define F_S		mass_rooms[f_s]->r_name
 
 #include "lem_in.h"
 
@@ -57,8 +60,8 @@ void		ft_connect(t_room **mass_rooms_cp, t_links *links, int	count)
 			{
 				if (!ft_strcmp(mass_rooms[f_s]->name, links->s_name))
 				{
-					mass_rooms[count]->r_name = ft_make_r_name(mass_rooms[count]->r_name, f_s);
-					mass_rooms[f_s]->r_name = ft_make_r_name(mass_rooms[f_s]->r_name, count);
+					COUNT = ft_make_r_name(COUNT, f_s);
+					F_S = ft_make_r_name(F_S, count);
 				}
 				f_s++;
 			}
