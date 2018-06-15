@@ -6,7 +6,7 @@
 /*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/14 20:54:19 by dpogrebn          #+#    #+#             */
-/*   Updated: 2018/06/14 22:31:22 by dpogrebn         ###   ########.fr       */
+/*   Updated: 2018/06/15 13:34:36 by dpogrebn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ void	ft_check_valid_link(char *str)
 	{
 		i++;
 		if (!str[i])
-		{
 			ft_exit();
-		}
 	}
 	i++;
 	while (str[i])
@@ -74,4 +72,18 @@ int		ft_find_cont(char *name, t_room **mass_rooms)
 		count++;
 	}
 	return (count);
+}
+
+void	ft_check_right_name(char *f, t_room **mass_rooms)
+{
+	int		count;
+
+	count = 0;
+	while (mass_rooms[count])
+	{
+		if (!ft_strcmp(mass_rooms[count]->name, f))
+			return ;
+		count++;
+	}
+	ft_exit();
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_put_len.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 19:17:54 by dmitriy1          #+#    #+#             */
-/*   Updated: 2018/06/15 01:42:06 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/15 13:41:00 by dpogrebn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	ft_set_len_bk(t_room **mass_rooms, int count, int len)
 	room = mass_rooms[count]->r_name;
 	if (len < mass_rooms[count]->length_bk || !mass_rooms[count]->length_bk)
 	{
-		mass_rooms[count]->length_bk = len; 
+		mass_rooms[count]->length_bk = len;
 		room->use_bk = 0;
 	}
 	if (room->use_bk)
 	{
-		return;	
+		return ;
 	}
 	while (room)
 	{
@@ -64,9 +64,9 @@ int		ft_find_finish(t_room **mass_rooms)
 
 void	ft_put_len(t_room **mass_rooms_cp)
 {
-	int count_fin;
-	int	start;
-	t_room **mass_rooms;
+	int		count_fin;
+	int		start;
+	t_room	**mass_rooms;
 
 	mass_rooms = mass_rooms_cp;
 	start = ft_find_start(mass_rooms);

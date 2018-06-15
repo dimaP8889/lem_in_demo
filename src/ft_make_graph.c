@@ -6,7 +6,7 @@
 /*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 19:16:55 by dmitriy1          #+#    #+#             */
-/*   Updated: 2018/06/14 20:06:48 by dpogrebn         ###   ########.fr       */
+/*   Updated: 2018/06/15 13:36:52 by dpogrebn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include "lem_in.h"
 
-t_name	*ft_make_first(int count)
+t_name		*ft_make_first(int count)
 {
 	t_name	*name;
 
@@ -45,11 +45,11 @@ t_name		*ft_make_r_name(t_name *r_name, int f_s)
 	return (r_name_cp);
 }
 
-void		ft_connect(t_room **mass_rooms_cp, t_links *links, int	count)
+void		ft_connect(t_room **mass_rooms_cp, t_links *links, int count)
 {
-	int	f_s;
+	int		f_s;
+	t_room	**mass_rooms;
 
-	t_room **mass_rooms;
 	f_s = 0;
 	mass_rooms = mass_rooms_cp;
 	while (mass_rooms[count])
@@ -71,7 +71,7 @@ void		ft_connect(t_room **mass_rooms_cp, t_links *links, int	count)
 	}
 }
 
-void	ft_make_graph(t_room **mass_rooms, t_links *links)
+void		ft_make_graph(t_room **mass_rooms, t_links *links)
 {
 	while (links)
 	{

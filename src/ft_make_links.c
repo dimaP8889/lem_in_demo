@@ -3,30 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_make_links.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/26 13:31:24 by dmitriy1          #+#    #+#             */
-/*   Updated: 2018/06/15 02:21:53 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/15 13:39:15 by dpogrebn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	ft_check_right_name(char *f, t_room **mass_rooms)
-{
-	int		count;
-
-	count = 0;
-	while (mass_rooms[count])
-	{
-		if (!ft_strcmp(mass_rooms[count]->name, f))
-			return;
-		count++;
-	}
-	ft_exit();
-}
-
-void	ft_linked(t_links *links, char *str, t_room **mass_rooms)
+void		ft_linked(t_links *links, char *str, t_room **mass_rooms)
 {
 	char	*f_name;
 	char	*s_name;
@@ -40,20 +26,7 @@ void	ft_linked(t_links *links, char *str, t_room **mass_rooms)
 	free(f_name);
 }
 
-void	ft_free_links(t_links	*links)
-{
-	t_links	*links_cp;
-	while (links)
-	{
-		free(links->f_name);
-		free(links->s_name);
-		links_cp = links;
-		links = links->next;
-		free(links_cp);
-	}
-}
-
-void	ft_malloc_link(int end, t_links	**links)
+void		ft_malloc_link(int end, t_links **links)
 {
 	if (end)
 	{
@@ -63,7 +36,7 @@ void	ft_malloc_link(int end, t_links	**links)
 	}
 }
 
-int	ft_lose(char **str, int fd)
+int			ft_lose(char **str, int fd)
 {
 	int		end;
 
@@ -76,18 +49,16 @@ int	ft_lose(char **str, int fd)
 	return (end);
 }
 
-void	ft_make_links(t_room **mass_rooms, int fd, char *str)
+t_links		*ft_check_links(t_room **mass_rooms, int fd, char *str)
 {
-	int 	end;
+	int		end;
 	t_links	*links;
 	t_links	*links_cp;
-	t_room **mass_rooms_cp;
 
-	end = 1;
-	mass_rooms_cp = mass_rooms;
 	links = (t_links *)malloc(sizeof(t_links));
 	links->next = NULL;
 	links_cp = links;
+	end = 1;
 	while (end)
 	{
 		if (str[0] == '#')
@@ -103,8 +74,16 @@ void	ft_make_links(t_room **mass_rooms, int fd, char *str)
 		ft_malloc_link(end, &links);
 	}
 	links->next = NULL;
-	ft_make_graph(mass_rooms_cp, links_cp);
-	ft_free_links(links_cp);
-	ft_put_len(mass_rooms_cp);
-	ft_make_way(mass_rooms_cp);
+	return (links_cp);
+}
+
+void		ft_make_links(t_room **mass_rooms, int fd, char *str)
+{
+	t_links	*links;
+
+	links = ft_check_links(mass_rooms, fd, str);
+	ft_make_graph(mass_rooms, links);
+	ft_free_links(links);
+	ft_put_len(mass_rooms);
+	ft_make_way(mass_rooms);
 }

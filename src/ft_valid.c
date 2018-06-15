@@ -3,174 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_valid.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 17:15:40 by dpogrebn          #+#    #+#             */
-/*   Updated: 2018/06/15 01:55:44 by dmitriy1         ###   ########.fr       */
+/*   Updated: 2018/06/15 14:56:38 by dpogrebn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-void	ft_free_room(t_room	*room)
-{
-	while (room)
-	{
-		free(room->name);
-		free(room);
-		room = room->next_room;
-	}
-}
-
-void	ft_exit()
-{
-	ft_printf("ERROR\n");
-	exit(1);
-}
-
-int		ft_if_start(char **str, int start, int fd, t_room *room)
-{
-	if (!ft_strcmp(*str, "##start"))
-	{
-		start++;
-		(room)->start = 1;
-		free(*str);
-		get_next_line(fd, str);
-		if (*str[0] == '#')
-			ft_comment(str, fd, room);
-	}
-	else if (!room->start)
-		(room)->start = 0;
-	return (start);
-}
-
-int		ft_if_end(char **str, int fin, int fd, t_room *room)
-{
-	if (!ft_strcmp(*str, "##end"))
-	{
-		fin++;
-		free(*str);
-		(room)->fin = 1;
-		get_next_line(fd, str);
-		if (*str[0] == '#')
-			ft_comment(str, fd, room);
-	}
-	else if (!room->fin)
-		(room)->fin = 0;
-	return (fin);
-}
-
-void	ft_comment(char **str, int fd, t_room *room)
-{
-	static int	start;
-	static int	fin;
-
-	while (*str[0] == '#' && (ft_strcmp(*str, "##start")) 
-	&& (ft_strcmp(*str, "##end")))
-	{
-		free(*str);
-		get_next_line(fd, str);
-	}
-	start = ft_if_start(str, start, fd, room);
-	fin = ft_if_end(str, fin, fd, room);
-	if (start > 1 || fin > 1)
-	{
-		ft_exit();
-	}
-	*str[0] == '#' ? ft_comment(str, fd, (room)) : *str[0] == '#';
-}
-
-int		ft_mass_len(char **mass)
-{
-	int		len;
-
-	len = 0;
-	while (mass[len])
-		len++;
-	return (len);
-}
-
-
-void	ft_check_digit(char *str)
-{
-	int	num;
-
-	num = 0;
-	while (str[num])
-	{
-		if (!ft_isdigit(str[num]))
-		{
-			ft_exit();
-		}
-		num++;
-	}
-}
-
-void	ft_check_name(char *str)
-{
-	if (str[0] == 'L' || ft_strstr(str, "-"))
-	{
-		ft_exit();
-	}
-}
-
-void		ft_valid_room(char **str, int fd, t_room *room)
-{
-	char	**params;
-	int		count;
-
-	count = 0;
-	room->fin = 0;
-	room->start = 0;
-	if (*str[0] == '#')
-		ft_comment(str, fd, room);
-	if (ft_strstr(*str, "-"))
-		return;
-	params = ft_strsplit(*str, ' ');
-	if (ft_mass_len(params) != 3 || !ft_strlen(*str))
-		ft_exit();
-	ft_check_name(params[0]);
-	room->name = ft_strdup(params[0]);
-	ft_check_digit(params[1]);
-	ft_check_digit(params[2]);
-	room->x = ft_atoi(params[1]);
-	room->y = ft_atoi(params[2]);
-	while (params[count])
-	{
-		free(params[count]);
-		count++;
-	}
-	free(params);
-}
-
-
-t_room	*ft_find_end(char **str, int fd, t_room *room)
-{
-	ft_valid_room(str, fd, room);
-	if (ft_strstr(*str, "-") && *str[0] != '#')
-		return (room);
-	free(*str);
-	room->next_room = (t_room *)malloc(sizeof(t_room));
-	room = room->next_room;
-	get_next_line(fd, str);
-	return (room);
-
-}
-
-t_room	*ft_check_rooms(t_room *room, int fd, char **str)
-{
-	t_room 	*rooms;
-
-	room = (t_room *)malloc(sizeof(t_room));
-	rooms = room;
-	get_next_line(fd, str);
-	while (!ft_strstr(*str, "-") || (ft_strstr(*str, "-") && *str[0] == '#'))
-	{
-		room = ft_find_end(str, fd, room);
-	}
-	room->next_room = NULL;
-	return (rooms);
-}
 
 int		ft_count_links(t_room *rooms)
 {
@@ -187,15 +27,15 @@ int		ft_count_links(t_room *rooms)
 
 int		ft_check_num(int fd)
 {
-	char	*str;
-	int		ants;
-	int		cnt;
+	char			*str;
+	long int		ants;
+	int				cnt;
 
 	ants = 0;
 	cnt = get_next_line(fd, &str);
 	if (cnt < 1)
 		ft_exit();
-	while (str[0] == '#' && (ft_strcmp(str, "##start")) 
+	while (str[0] == '#' && (ft_strcmp(str, "##start"))
 	&& (ft_strcmp(str, "##end")))
 	{
 		free(str);
@@ -203,47 +43,19 @@ int		ft_check_num(int fd)
 	}
 	ants = ft_atoi(str);
 	ft_check_digit(str);
-	if (ants < 0)
+	if (ants <= 0 || ants > 2147483647)
 		ft_exit();
 	free(str);
 	return (ants);
 }
 
-void			ft_check_same_coord(t_room *room, t_room **mass_rooms, int coord)
-{
-	int		count;
-
-	count = 0;
-	while (mass_rooms[count])
-	{
-		if ((room->x == mass_rooms[count]->x && room->y == mass_rooms[count]->y) 
-		|| !ft_strcmp(room->name, mass_rooms[count]->name))
-			if (count != coord)
-				ft_exit();
-		count++;
-	}
-}
-
-void			ft_check_rights(t_room **mass_rooms)
-{
-	int		count;
-
-	count = 0;
-	while (mass_rooms[count])
-	{
-		ft_check_same_coord(mass_rooms[count], mass_rooms, count);
-		count++;
-	}
-}
-
-t_room			**ft_set_params(t_room **mass_rooms)
+t_room	**ft_set_params(t_room **mass_rooms)
 {
 	int		coun;
 
 	coun = 0;
 	while (mass_rooms[coun])
 	{
-		//mass_rooms[coun]->r_name = NULL;
 		mass_rooms[coun]->next_room = NULL;
 		mass_rooms[coun]->free = 1;
 		mass_rooms[coun]->ants = 0;
@@ -255,7 +67,7 @@ t_room			**ft_set_params(t_room **mass_rooms)
 	return (mass_rooms);
 }
 
-t_room			**ft_make_mass(t_room **mass_rooms, t_room	*in)
+t_room	**ft_make_mass(t_room **mass_rooms, t_room *in)
 {
 	int		coun;
 
@@ -279,7 +91,7 @@ t_room			**ft_make_mass(t_room **mass_rooms, t_room	*in)
 	return (mass_rooms);
 }
 
-t_room			**ft_valid(int fd)
+t_room	**ft_valid(int fd)
 {
 	t_room	**mass_rooms;
 	t_room	*in;
