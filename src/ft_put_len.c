@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_put_len.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 19:17:54 by dmitriy1          #+#    #+#             */
-/*   Updated: 2018/06/14 22:05:53 by dpogrebn         ###   ########.fr       */
+/*   Updated: 2018/06/15 01:42:06 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,9 @@ void	ft_put_len(t_room **mass_rooms_cp)
 	start = ft_find_start(mass_rooms);
 	count_fin = ft_find_finish(mass_rooms);
 	if (!mass_rooms[count_fin]->r_name || !mass_rooms[start]->r_name)
+	{
 		ft_exit();
+	}
 	ft_set_len_bk(mass_rooms, count_fin, 0);
 	mass_rooms[count_fin]->length_bk = 0;
 }

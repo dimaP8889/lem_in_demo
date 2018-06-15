@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_make_links.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/26 13:31:24 by dmitriy1          #+#    #+#             */
-/*   Updated: 2018/06/14 22:47:56 by dpogrebn         ###   ########.fr       */
+/*   Updated: 2018/06/15 02:21:53 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,24 @@ void	ft_linked(t_links *links, char *str, t_room **mass_rooms)
 
 void	ft_free_links(t_links	*links)
 {
+	t_links	*links_cp;
 	while (links)
 	{
 		free(links->f_name);
 		free(links->s_name);
-		free(links);
+		links_cp = links;
 		links = links->next;
+		free(links_cp);
 	}
 }
 
-void	ft_malloc_link(int end, t_links	**links, char *str)
+void	ft_malloc_link(int end, t_links	**links)
 {
-	if (end && str[0] != '#' )
+	if (end)
 	{
 		(*links)->next = (t_links *)malloc(sizeof(t_links));
 		*links = (*links)->next;
+		(*links)->next = NULL;
 	}
 }
 
@@ -83,6 +86,7 @@ void	ft_make_links(t_room **mass_rooms, int fd, char *str)
 	end = 1;
 	mass_rooms_cp = mass_rooms;
 	links = (t_links *)malloc(sizeof(t_links));
+	links->next = NULL;
 	links_cp = links;
 	while (end)
 	{
@@ -94,7 +98,9 @@ void	ft_make_links(t_room **mass_rooms, int fd, char *str)
 		ft_linked(links, str, mass_rooms);
 		free(str);
 		end = get_next_line(fd, &str);
-		ft_malloc_link(end, &links, str);
+		if (str[0] == '#')
+			end = ft_lose(&str, fd);
+		ft_malloc_link(end, &links);
 	}
 	links->next = NULL;
 	ft_make_graph(mass_rooms_cp, links_cp);

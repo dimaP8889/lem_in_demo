@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_valid.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpogrebn <dpogrebn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmitriy1 <dmitriy1@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 17:15:40 by dpogrebn          #+#    #+#             */
-/*   Updated: 2018/06/14 23:27:58 by dpogrebn         ###   ########.fr       */
+/*   Updated: 2018/06/15 01:55:44 by dmitriy1         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void		ft_valid_room(char **str, int fd, t_room *room)
 t_room	*ft_find_end(char **str, int fd, t_room *room)
 {
 	ft_valid_room(str, fd, room);
-	if (ft_strstr(*str, "-"))
+	if (ft_strstr(*str, "-") && *str[0] != '#')
 		return (room);
 	free(*str);
 	room->next_room = (t_room *)malloc(sizeof(t_room));
@@ -189,9 +189,12 @@ int		ft_check_num(int fd)
 {
 	char	*str;
 	int		ants;
+	int		cnt;
 
 	ants = 0;
-	get_next_line(fd, &str);
+	cnt = get_next_line(fd, &str);
+	if (cnt < 1)
+		ft_exit();
 	while (str[0] == '#' && (ft_strcmp(str, "##start")) 
 	&& (ft_strcmp(str, "##end")))
 	{
@@ -200,7 +203,7 @@ int		ft_check_num(int fd)
 	}
 	ants = ft_atoi(str);
 	ft_check_digit(str);
-	if (!ants)
+	if (ants < 0)
 		ft_exit();
 	free(str);
 	return (ants);
